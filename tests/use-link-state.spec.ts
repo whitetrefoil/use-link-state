@@ -1,9 +1,9 @@
-import {expect, jest, test} from '@jest/globals'
+// @vitest-environment happy-dom
+
 import {act, renderHook} from '@testing-library/react'
+import {expect, test} from 'vitest'
 import {useLinkState} from '~/use-link-state.js'
 
-
-jest.resetModules()
 
 test('useLinkState', () => {
   const {result} = renderHook(() => useLinkState(0))

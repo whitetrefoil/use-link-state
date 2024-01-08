@@ -1,22 +1,12 @@
 {
   "extends"        : "../src/tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,
-    "module" : "CommonJS",
-    "paths"  : {
-      "~/*": [
-        "../src/*"
-      ]
+    "paths": {
+      "~/*": ["../src/*"]
     }
   },
   "include"        : [
-    "../declarations/**/*",
-    "../src/**/*",
-    "**/*"
-  ],
-  "exclude"        : [
-    "**/node_modules",
-    "**/.*",
-    "**/~*"
+    "../src/**/*.ts",
+    "**/*.ts"
   ]
 }
