@@ -12,7 +12,11 @@ export default defineConfig({
   ],
 
   test: {
-    root: fileURLToPath(new URL('.', import.meta.url)),
+    root: import.meta.dirname,
+
+    environment: 'happy-dom',
+
+    setupFiles: ['./tests/setup.ts'],
 
     alias: [{find: /^~\/(.*)/u, replacement: fileURLToPath(new URL('src/$1', import.meta.url))}],
 

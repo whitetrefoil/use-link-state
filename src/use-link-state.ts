@@ -1,21 +1,53 @@
-import {useCallback, useState} from 'react'
+import {type Dispatch, type SetStateAction, useCallback, useState} from 'react'
 
 
-export interface HasCTarget<T> {
+export interface ValueTarget {
   currentTarget: {
-    value: T
+    value: string
   }
 }
 
-type StateUpdater<S> = ReturnType<typeof useState<S>>[1]
-export type StateLinker<S> = (ev: HasCTarget<S>) => void
+export interface CheckedTarget {
+  currentTarget: {
+    checked: boolean
+  }
+}
 
-export function useLinkState<S>(initialValue: S|(() => S)): [S, StateUpdater<S>, StateLinker<S>]
-export function useLinkState<S=undefined>(): [S|undefined, StateUpdater<S|undefined>, StateLinker<S>]
-export function useLinkState<S>(initialValue?: S|(() => S)): [S|undefined, StateUpdater<S|undefined>, StateLinker<S>] {
-  const [state, setState] = useState<S|undefined>(initialValue)
-  const linkState = useCallback((ev: HasCTarget<S>) => {
+type StateUpdater<S> = Dispatch<SetStateAction<S>>
+type HookReturn<S, T> = [S, StateUpdater<S>, (ev: T) => void]
+
+
+export function useLinkState(initialValue: string|(() => string) = ''): HookReturn<string, ValueTarget> {
+
+  const [state, setState] = useState<string>(initialValue)
+
+  const linkState = useCallback((ev: ValueTarget) => {
     setState(ev.currentTarget.value)
+  }, [])
+
+  return [state, setState, linkState]
+}
+
+
+export function useLinkNumberState(initialValue: number|(() => number) = 0): HookReturn<number, ValueTarget> {
+
+  const [state, setState] = useState<number>(initialValue)
+
+  const linkState = useCallback((ev: ValueTarget) => {
+    const numberValue = Number(ev.currentTarget.value)
+    setState(Number.isNaN(numberValue) ? 0 : numberValue)
+  }, [])
+
+  return [state, setState, linkState]
+}
+
+
+export function useLinkCheckedState(initialValue: boolean|(() => boolean) = false): HookReturn<boolean, CheckedTarget> {
+
+  const [state, setState] = useState<boolean>(initialValue)
+
+  const linkState = useCallback((ev: CheckedTarget) => {
+    setState(ev.currentTarget.checked)
   }, [])
 
   return [state, setState, linkState]
